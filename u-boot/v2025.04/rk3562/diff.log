@@ -1,0 +1,62 @@
+Not currently on any branch.
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+	modified:   .gitignore
+	new file:   arch/arm/dts/rk3562-geekpi-1-u-boot.dtsi
+	new file:   arch/arm/include/asm/arch-rk3562/boot0.h
+	modified:   arch/arm/include/asm/arch-rockchip/clock.h
+	modified:   arch/arm/include/asm/arch-rockchip/cru.h
+	new file:   arch/arm/include/asm/arch-rockchip/cru_rk3562.h
+	new file:   arch/arm/include/asm/arch-rockchip/grf_rk3562.h
+	new file:   arch/arm/include/asm/arch-rockchip/ioc_rk3562.h
+	new file:   arch/arm/include/asm/arch-rockchip/rockchip_smccc.h
+	new file:   arch/arm/include/asm/arch-rockchip/sdram_rk3562.h
+	modified:   arch/arm/mach-rockchip/Kconfig
+	modified:   arch/arm/mach-rockchip/Makefile
+	new file:   arch/arm/mach-rockchip/rk3562/Kconfig
+	new file:   arch/arm/mach-rockchip/rk3562/Makefile
+	new file:   arch/arm/mach-rockchip/rk3562/clk_rk3562.c
+	new file:   arch/arm/mach-rockchip/rk3562/rk3562.c
+	new file:   arch/arm/mach-rockchip/rk3562/syscon_rk3562.c
+	modified:   arch/arm/mach-rockchip/sdram.c
+	new file:   board/geekpi/geekpi-1-rk3562/Kconfig
+	new file:   board/geekpi/geekpi-1-rk3562/Makefile
+	new file:   board/geekpi/geekpi-1-rk3562/geekpi-1-rk3562.c
+	new file:   board/rockchip/evb_rk3562/Kconfig
+	new file:   board/rockchip/evb_rk3562/Makefile
+	new file:   board/rockchip/evb_rk3562/evb_rk3562.c
+	new file:   configs/geekpi-1-rk3562_defconfig
+	modified:   drivers/adc/rockchip-saradc.c
+	modified:   drivers/clk/rockchip/Makefile
+	new file:   drivers/clk/rockchip/clk_rk3562.c
+	new file:   drivers/misc/rk3562-secure-otp.S
+	modified:   drivers/misc/rockchip-otp.c
+	modified:   drivers/mmc/rockchip_sdhci.c
+	modified:   drivers/net/dwc_eth_qos.c
+	modified:   drivers/net/dwc_eth_qos_rockchip.c
+	modified:   drivers/pci/pcie_dw_rockchip.c
+	modified:   drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+	modified:   drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+	modified:   drivers/pinctrl/rockchip/Makefile
+	new file:   drivers/pinctrl/rockchip/pinctrl-rk3562.c
+	modified:   drivers/ram/rockchip/Makefile
+	new file:   drivers/ram/rockchip/sdram_rk3562.c
+	modified:   drivers/reset/Makefile
+	new file:   drivers/reset/rst-rk3562.c
+	modified:   drivers/thermal/Kconfig
+	modified:   drivers/thermal/Makefile
+	new file:   drivers/thermal/rockchip_thermal.c
+	modified:   dts/upstream/Bindings/arm/rockchip.yaml
+	new file:   dts/upstream/include/dt-bindings/clock/rk3562-cru.h
+	new file:   dts/upstream/src/arm64/rockchip/rk3562-geekpi-1.dts
+	new file:   dts/upstream/src/arm64/rockchip/rk3562-pinctrl.dtsi
+	new file:   dts/upstream/src/arm64/rockchip/rk3562-rk809.dtsi
+	new file:   dts/upstream/src/arm64/rockchip/rk3562.dtsi
+	modified:   include/clk.h
+	new file:   include/configs/evb_rk3562.h
+	new file:   include/configs/geekpi-1-rk3562.h
+	new file:   include/configs/rk3562_common.h
+	new file:   include/dt-bindings/power/rk3562-power.h
+	new file:   include/dt-bindings/soc/rockchip-system-status.h
+	modified:   tools/rkcommon.c
+
