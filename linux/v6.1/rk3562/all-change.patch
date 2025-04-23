@@ -1,0 +1,974 @@
+diff --git a/.gitignore b/.gitignore
+index 3e92f42f9..336fb9a3c 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -10,6 +10,9 @@
+ #
+ # Normal rules (sorted alphabetically)
+ #
++.*
++/usr
++*.cmd
+ *.a
+ *.asn1.[ch]
+ *.bin
+diff --git a/arch/arm64/boot/dts/rockchip/Makefile b/arch/arm64/boot/dts/rockchip/Makefile
+index 32ac90543..c5f3966b8 100644
+--- a/arch/arm64/boot/dts/rockchip/Makefile
++++ b/arch/arm64/boot/dts/rockchip/Makefile
+@@ -1,4 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0
++dtb-$(CONFIG_ARCH_ROCKCHIP) += rk3562-geekpi-1.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += px30-evb.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += px30-engicam-px30-core-ctouch2.dtb
+ dtb-$(CONFIG_ARCH_ROCKCHIP) += px30-engicam-px30-core-ctouch2-of10.dtb
+diff --git a/arch/arm64/boot/dts/rockchip/rk3562-geekpi-1.dts b/arch/arm64/boot/dts/rockchip/rk3562-geekpi-1.dts
+new file mode 100644
+index 000000000..9208b4e15
+--- /dev/null
++++ b/arch/arm64/boot/dts/rockchip/rk3562-geekpi-1.dts
+@@ -0,0 +1,944 @@
++/dts-v1/;
++
++#include "rk3562-evb2-ddr4-v10.dtsi"
++#include "rk3562-linux.dtsi"
++#include "rk3562-rk809.dtsi"
++#include "rk3562-amp.dtsi"
++
++/ {
++	model = "TL3562-MiniEVM";
++
++	aliases {
++		mmc0 = &sdhci;
++		mmc1 = &sdmmc0;
++		mmc2 = &sdmmc1;
++	};
++
++	/delete-node/ adc-keys;
++	adc_keys0: adc-keys0 {
++		compatible = "adc-keys";
++		io-channels = <&saradc0 0>;
++		io-channel-names = "buttons";
++		keyup-threshold-microvolt = <1800000>;
++		poll-interval = <100>;
++
++		user_key@2 {
++			label = "maskrom";
++			linux,code = <KEY_PROG1>;
++			press-threshold-microvolt = <1750>;
++		};
++	};
++
++	adc_keys1: adc-keys1 {
++		compatible = "adc-keys";
++		io-channels = <&saradc0 1>;
++		io-channel-names = "buttons";
++		keyup-threshold-microvolt = <1800000>;
++		poll-interval = <100>;
++
++		user_key@0 {
++			label = "user-key1";
++			linux,code = <KEY_PROG1>;
++			press-threshold-microvolt = <1750>;
++		};
++	};
++
++	leds: leds {
++		compatible = "gpio-leds";
++
++		som_led0 {
++			label = "heartbeat";
++			gpios = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "heartbeat";
++			default-state = "off";
++		};
++
++		som_led1 {
++			label = "disk";
++			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "mmc0";
++			default-state = "off";
++		};
++
++		user_led0 {
++			label = "user-led0";
++			gpios = <&gpio4 RK_PB1 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "default-on";
++			default-state = "off";
++		};
++
++		user_led1 {
++			label = "user-led1";
++			gpios = <&gpio4 RK_PB7 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "default-on";
++			default-state = "off";
++		};
++	};
++
++
++	/delete-node/ wireless-wlan;
++	wireless-bluetooth {
++		status = "disabled";
++	};
++
++	ov9281_clk: ov9281-clk {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <24000000>;
++		clock-output-names = "ov9281_clk";
++	};
++
++	imx219_clk: imx219-clk {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <24000000>;
++		clock-output-names = "imx219_clk";
++	};
++
++	can0: can@ff600000 {
++		compatible = "rockchip,rk3562-can";
++		reg = <0x0 0xff600000 0x0 0x1000>;
++		interrupts = <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&cru CLK_CAN0>, <&cru PCLK_CAN0>;
++		clock-names = "baudclk", "apb_pclk";
++		resets = <&cru SRST_CAN0>, <&cru SRST_P_CAN0>;
++		reset-names = "can", "can-apb";
++		pinctrl-names = "default";
++		pinctrl-0 = <&can0m2_pins>;
++		status = "disabled";
++	};
++
++	can1: can@ff610000 {
++		compatible = "rockchip,rk3562-can";
++		reg = <0x0 0xff610000 0x0 0x1000>;
++		interrupts = <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>;
++		clocks = <&cru CLK_CAN1>, <&cru PCLK_CAN1>;
++		clock-names = "baudclk", "apb_pclk";
++		resets = <&cru SRST_CAN1>, <&cru SRST_P_CAN1>;
++		reset-names = "can", "can-apb";
++		pinctrl-names = "default";
++		pinctrl-0 = <&can1m1_pins>;
++		status = "disabled";
++	};
++
++	reserved-memory {
++		amp_core0_mem_reserved: amp-core0-mem@9000000 {
++			reg = <0x0 0x09000000 0x0 0x00800000>;
++			no-map;
++		};
++		amp_core1_mem_reserved: amp-core1-mem@9800000 {
++			reg = <0x0 0x09800000 0x0 0x00800000>;
++			no-map;
++		};
++		amp_core2_mem_reserved: amp-core2-mem@a000000 {
++			reg = <0x0 0x0a000000 0x0 0x00800000>;
++			no-map;
++		};
++		amp_core3_mem_reserved: amp-core3-mem@a800000 {
++			reg = <0x0 0x0a800000 0x0 0x00800000>;
++			no-map;
++		};
++	};
++
++};
++
++&i2c2 {
++	/* GPIO0_A0 is used for TL3562-MINI-EVM  MIPI_LCD_RST */
++	/delete-node/ gt1x@14;
++};
++
++&saradc1 {
++	status = "okay";
++	vref-supply = <&vcc_1v8>;
++};
++
++&spi0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&spi0m0_csn0 &spi0m0_pins>;
++	status = "okay";
++};
++
++&i2c1 {
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c1m0_xfer>;
++
++};
++
++/* GPIO0_B7 is used for TL3562-MINI-EVM pwm4m0 */
++&vcc3v3_pcie20 {
++	/delete-property/ enable-active-high;
++	/delete-property/ gpios;
++};
++
++&pwm4 {
++	status = "okay";
++};
++
++/* GPIO3_B7(i2c4m0 sda) is used for TL3562-MINI-EVM EXPORT GPIO */
++&i2c4 {
++	status = "disabled";
++};
++
++&uart3 {
++	/*GPIO3_C1 used for TYPEC_SWSEL*/
++	status = "disabled";
++};
++
++&uart4 {
++	status = "disabled";
++};
++
++/* GPIO3_A1 is used for TL3562-MINI-EVM EXPORT GPIO */
++&spdif_8ch {
++	status = "disabled";
++};
++
++&spdif_out {
++	status = "disabled";
++};
++
++&uart2 {
++	status = "disabled";
++	/delete-node/ pinctrl-names ;
++	/delete-node/ pinctrl-0 ;
++};
++
++/* GPIO0_C1 is used for TL3562-MINI-EVM EXPORT GPIO */
++&pwm6 {
++	status = "disabled";
++};
++
++/* VDD_NPU */
++&pwm3 {
++	compatible = "rockchip,rk3562-pwm", "rockchip,rk3328-pwm";
++	pinctrl-names = "active";
++	pinctrl-0 = <&pwm3m0_pins>;
++	status = "okay";
++
++	/delete-property/ assigned-clocks;
++	/delete-property/ assigned-clock-rates;
++	/delete-property/ remote_pwm_id;
++	/delete-property/ handle_cpu_id;
++	/delete-property/ remote_support_psci;
++
++	/delete-node/ ir_key1;
++	/delete-node/ ir_key2;
++	/delete-node/ ir_key3;
++};
++
++&vdd_npu {
++	pwms = <&pwm3 0 5000 1>;
++};
++
++/* GPIO4_B0 is used for TL3562-MINI-EVM MIPI_LVDS_CAP_TS_nINT */
++&vcc5v0_usb_host {
++	/delete-property/ enable-active-high;
++	/delete-property/ gpio;
++	/delete-property/ pinctrl-names;
++	/delete-property/ pinctrl-0;
++};
++
++/* USB20_HOST1 is already enabled */
++
++/* USB30_OTG0(used for usb3.0) is already enabled */
++&vcc5v0_usb_otg {
++	/delete-property/ gpio;
++	/delete-property/ pinctrl-names;
++	/delete-property/ pinctrl-0;
++	gpio = <&gpio0 RK_PB0 GPIO_ACTIVE_HIGH>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&usb0_otg_pwren>;
++};
++
++&mdio0 {
++	/delete-node/ phy@1;
++
++	rgmii_phy: phy@0 {
++		compatible = "ethernet-phy-ieee802.3-c22";
++		reg = <0x0>;
++	};
++};
++
++&gmac0 {
++	snps,reset-gpio = <&gpio3 RK_PD0 GPIO_ACTIVE_LOW>;
++	snps,reset-delays-us = <20000 20000 100000>;
++
++	tx_delay = <0x35>;
++	//rx_delay = <0x1e>;
++
++	pinctrl-0 = <&rgmiim0_miim
++		     &rgmiim0_tx_bus2
++		     &rgmiim0_rx_bus2
++		     &rgmiim0_rgmii_clk
++		     &rgmiim0_rgmii_bus>;
++
++	phy-handle = <&rgmii_phy>;
++};
++
++/* GPIO3_C2/C3 is used for TL3562-MINI-EVM HDMI_nRST&HDMI_EN  */
++&i2c5 {
++	status = "disabled";
++
++	/* GPIO1_C7 is used for TL3562-MINI-EVM rmii */
++	/delete-node/ mpu_acc@68;
++	/delete-node/ mpu_gyro@68;
++};
++
++/* GPIO1_D0 is used for TL3562-MINI-EVM rmii */
++&rk809_sound {
++	/delete-property/ hp-det-gpio;
++	/delete-property/ pinctrl-names;
++	/delete-property/ pinctrl-0;
++};
++
++/* GPIO1_D1, GPIO1_D2, GPIO1_D3, GPIO1_D4 is used for TL3562-MINI-EVM rmii */
++&uart1 {
++	status = "disabled";
++};
++
++&gmac1 {
++	phy-mode = "rmii";
++	clock_in_out = "input";
++
++	snps,reset-gpio = <&gpio3 RK_PD1 GPIO_ACTIVE_LOW>;
++	snps,reset-active-low;
++	snps,reset-delays-us = <200000 200000 200000>;
++
++	pinctrl-names = "default";
++	pinctrl-0 = <&rmii_pins>;
++
++	phy-handle = <&rmii_phy>;
++	status = "okay";
++};
++
++&mdio1 {
++	rmii_phy: phy@0 {
++		compatible = "ethernet-phy-ieee802.3-c22";
++		reg = <0x0>;
++		//clocks = <&cru CLK_GMAC_ETH_OUT2IO>;
++		//assigned-clocks = <&cru CLK_GMAC_ETH_OUT2IO>;
++		//assigned-clock-rates = <25000000>;
++	};
++};
++
++/* GPIO3_C2/C3 is used for TL3562-MINI-EVM HDMI_nRST&HDMI_EN  */
++&uart9 {
++	status = "disabled";
++	/delete-node/ pinctrl-names;
++	/delete-node/ pinctrl-0;
++};
++
++&i2c2 {
++	status = "okay";
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c2m0_xfer>;
++	wusb3801: tcpc@60 {
++		status = "okay";
++		compatible = "willsemi,wusb3801";
++		reg = <0x60>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&wusb3801_int_pin &ch482d_sel_pin>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <RK_PB6 IRQ_TYPE_LEVEL_LOW>;
++		ch482d_sel-gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_LOW>;
++	};
++};
++
++/* GPIO3_B0 is used for TL3562-MINI-EVM MIPI_LVDS_CAP_TS_RST */
++&pcie2x1 {
++	/delete-property/ reset-gpios;
++	/delete-property/ vpcie3v3-supply;
++	status = "disabled";
++};
++
++/* GPIO0_C2 is used for TL3562-MINI-EVM spi0m0 */
++&pwm5 {
++	status = "disabled";
++};
++
++/* MIPI DSI to HDMI */
++&dsi_panel {
++	status = "okay";
++	enable-delay-ms = <200>;
++	prepare-delay-ms = <200>;
++	unprepare-delay-ms = <200>;
++	disable-delay-ms = <200>;
++
++	/delete-property/ backlight;
++
++	/delete-property/ pinctrl-names;
++	/delete-property/ pinctrl-0;
++	/delete-property/ reset-gpios;
++	/delete-property/ panel-init-sequence;
++	/delete-property/ panel-exit-sequence;
++	/*
++	 * To adapt to LT8912B,
++	 * MIPI_DSI_MODE_VIDEO_HBP need to be added in RK3562-MINI-EVM.
++	 */
++	dsi,flags = <(MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_BURST |
++		MIPI_DSI_MODE_VIDEO_NO_HBP | MIPI_DSI_MODE_NO_EOT_PACKET)>;
++};
++
++&dsi_timing0 {
++	clock-frequency = <148500000>;
++	hactive = <1920>;
++	vactive = <1080>;
++	hfront-porch = <88>;
++	hsync-len = <44>;
++	hback-porch = <148>;
++	vfront-porch = <4>;
++	vsync-len = <5>;
++	vback-porch = <36>;
++	hsync-active = <0>;
++	vsync-active = <1>;
++	de-active = <0>;
++	pixelclk-active = <0>;
++};
++
++&usbdrd_dwc3 {
++
++	status = "okay";
++	dr_mode = "otg";
++	extcon = <&u2phy>;
++	/delete-property/ maximum-speed ;
++	phys = <&u2phy_otg>, <&combphy_pu PHY_TYPE_USB3>;
++	phy-names = "usb2-phy", "usb3-phy";
++	/delete-property/ snps,dis_u2_susphy_quirk;
++	/delete-property/ snps,usb2-lpm-disable;
++};
++
++&u2phy{
++	status = "okay";
++};
++
++&i2c1 {
++	lt8912b: lt8912b@48 {
++		compatible = "lontium,lt8912b";
++		reg = <0x48>;
++		mux-gpios = <&gpio3 RK_PC3 GPIO_ACTIVE_LOW>;
++		reset-gpios = <&gpio3 RK_PC2 GPIO_ACTIVE_LOW>;
++		status = "okay";
++	};
++};
++
++&i2c0 {
++	vm149c_0: vm149c@c {
++		compatible = "silicon touch,vm149c";
++		status = "okay";
++		reg = <0x0c>;
++		rockchip,camera-module-index = <2>;
++		rockchip,camera-module-facing = "back";
++	};
++
++	ov13850_0: ov13850@10 {
++		compatible = "ovti,ov13850";
++		status = "okay";
++		reg = <0x10>;
++		clocks = <&cru CLK_CAM0_OUT2IO>;
++		clock-names = "xvclk";
++		pinctrl-names = "default";
++		pinctrl-0 = <&camm0_clk0_out>;
++		pwdn-gpios = <&gpio3 RK_PA6 GPIO_ACTIVE_HIGH>;
++		rockchip,camera-module-index = <0>;
++		rockchip,camera-module-facing = "back";
++		rockchip,camera-module-name = "RK-CMK-8M-2-v1";
++		rockchip,camera-module-lens-name = "CK8401";
++		lens-focus = <&vm149c_0>;
++
++		port {
++			ov13850_out0: endpoint {
++				remote-endpoint = <&mipi_in_ucam0>;
++				data-lanes = <1 2 3 4>;
++			};
++		};
++	};
++};
++
++&csi2_dphy0 {
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		port@0 {
++			reg = <0>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			mipi_in_ucam0: endpoint@1 {
++				reg = <1>;
++				remote-endpoint = <&ov13850_out0>;
++				data-lanes = <1 2 3 4>;
++			};
++		};
++		port@1 {
++			reg = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			csidphy0_out: endpoint@0 {
++				reg = <0>;
++				remote-endpoint = <&mipi0_csi2_input>;
++			};
++		};
++	};
++};
++
++&mipi0_csi2 {
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@0 {
++			reg = <0>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			mipi0_csi2_input: endpoint@1 {
++				reg = <1>;
++				remote-endpoint = <&csidphy0_out>;
++			};
++		};
++
++		port@1 {
++			reg = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			mipi0_csi2_output: endpoint@0 {
++				reg = <0>;
++				remote-endpoint = <&cif_mipi_in0>;
++			};
++		};
++	};
++};
++
++&rkcif_mipi_lvds {
++	status = "okay";
++
++	port {
++		cif_mipi_in0: endpoint {
++			remote-endpoint = <&mipi0_csi2_output>;
++		};
++	};
++};
++
++&rkcif_mipi_lvds_sditf {
++	status = "okay";
++
++	port {
++		mipi_lvds_sditf: endpoint {
++			remote-endpoint = <&isp_vir0>;
++		};
++	};
++};
++
++&i2c1 {
++	vm149c_1: vm149c@c {
++		compatible = "silicon touch,vm149c";
++		status = "okay";
++		reg = <0x0c>;
++		rockchip,camera-module-index = <3>;
++		rockchip,camera-module-facing = "back";
++	};
++
++	ov13850_1: ov13850@10 {
++		compatible = "ovti,ov13850";
++		status = "okay";
++		reg = <0x10>;
++		clocks = <&cru CLK_CAM2_OUT2IO>;
++		clock-names = "xvclk";
++		pinctrl-names = "default";
++		pinctrl-0 = <&cam_clk2_out>;
++		pwdn-gpios = <&gpio3 RK_PC4 GPIO_ACTIVE_HIGH>;
++		rockchip,camera-module-index = <1>;
++		rockchip,camera-module-facing = "back";
++		rockchip,camera-module-name = "RK-CMK-8M-2-v1";
++		rockchip,camera-module-lens-name = "CK8401";
++		lens-focus = <&vm149c_1>;
++
++		port {
++			ov13850_out1: endpoint {
++				remote-endpoint = <&mipi_in_ucam1>;
++				data-lanes = <1 2 3 4>;
++			};
++		};
++	};
++};
++
++&csi2_dphy3 {
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		port@0 {
++			reg = <0>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			mipi_in_ucam1: endpoint@1 {
++				reg = <1>;
++				remote-endpoint = <&ov13850_out1>;
++				data-lanes = <1 2 3 4>;
++			};
++		};
++		port@1 {
++			reg = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			csidphy3_out: endpoint@0 {
++				reg = <0>;
++				remote-endpoint = <&mipi2_csi2_input>;
++			};
++		};
++	};
++};
++
++&mipi2_csi2 {
++	status = "okay";
++
++	ports {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		port@0 {
++			reg = <0>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			mipi2_csi2_input: endpoint@1 {
++				reg = <1>;
++				remote-endpoint = <&csidphy3_out>;
++			};
++		};
++
++		port@1 {
++			reg = <1>;
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			mipi2_csi2_output: endpoint@0 {
++				reg = <0>;
++				remote-endpoint = <&cif_mipi_in1>;
++			};
++		};
++	};
++};
++
++&rkcif_mipi_lvds2 {
++	status = "okay";
++
++	port {
++		cif_mipi_in1: endpoint {
++			remote-endpoint = <&mipi2_csi2_output>;
++		};
++	};
++};
++
++&rkcif_mipi_lvds2_sditf {
++	status = "okay";
++
++	port {
++		mipi_lvds2_sditf: endpoint {
++			remote-endpoint = <&isp_vir1>;
++		};
++	};
++};
++
++&csi2_dphy0_hw {
++	status = "okay";
++};
++
++&csi2_dphy1_hw {
++	status = "okay";
++};
++
++&rkcif {
++	status = "okay";
++};
++
++&rkcif_mmu {
++	status = "okay";
++};
++
++&rkisp {
++	status = "okay";
++};
++
++&rkisp_mmu {
++	status = "okay";
++};
++
++&rkisp_vir0 {
++	status = "okay";
++
++	port {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		isp_vir0: endpoint@0 {
++			reg = <0>;
++			remote-endpoint = <&mipi_lvds_sditf>;
++		};
++	};
++};
++
++&rkisp_vir1 {
++	status = "okay";
++
++	port {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		isp_vir1: endpoint@1 {
++			reg = <1>;
++			remote-endpoint = <&mipi_lvds2_sditf>;
++		};
++	};
++};
++
++&sdio_pwrseq {
++	status = "disabled";
++
++	/delete-property/ clocks;
++	/delete-property/ clock-names;
++	/delete-property/ pinctrl-names;
++	/delete-property/ pinctrl-0;
++};
++
++/* SDIO */
++&sdmmc1 {
++	status = "disabled";
++	max-frequency = <50000000>;
++	/delete-property/ sd-uhs-sdr104;
++};
++
++/* Do not reduce cpu freq up to 115 centigrade */
++&threshold {
++	temperature = <115000>;
++};
++
++&target {
++	temperature = <115000>;
++};
++
++&vcca_1v8 {
++	regulator-min-microvolt = <3300000>;
++	regulator-max-microvolt = <3300000>;
++};
++
++&vccio_acodec {
++	regulator-min-microvolt = <3300000>;
++	regulator-max-microvolt = <3300000>;
++};
++
++/* max clk need to be 50MHz */
++&sdmmc0 {
++	/delete-property/ sd-uhs-sdr104;
++};
++
++&cpu0_opp_table {
++	/delete-node/ mbist-vmin;
++	/*
++	 * Max CPU frequency is 1.8GHz for the overdrive mode,
++	 * but it will reduce chip lifetime.
++	 */
++	opp-408000000 {
++		opp-microvolt = <850000 850000 1150000>;
++	};
++	opp-600000000 {
++		opp-microvolt = <850000 850000 1150000>;
++	};
++	opp-816000000 {
++		opp-microvolt = <850000 850000 1150000>;
++	};
++	opp-1008000000 {
++		opp-microvolt = <850000 850000 1150000>;
++	};
++	opp-1200000000 {
++		opp-microvolt-L4 = <850000 850000 1150000>;
++	};
++	opp-1416000000 {
++		status = "disabled";
++	};
++	opp-1608000000 {
++		status = "disabled";
++	};
++	opp-1800000000 {
++		status = "disabled";
++	};
++	opp-2016000000 {
++		status = "disabled";
++	};
++};
++
++&gpu_opp_table {
++	/delete-node/ mbist-vmin;
++	/*
++	 * Max GPU frequency is 900MHz for the overdrive mode,
++	 * but it will reduce chip lifetime.
++	 */
++	opp-300000000 {
++		opp-microvolt = <850000 850000 1000000>;
++	};
++	opp-400000000 {
++		opp-microvolt = <850000 850000 1000000>;
++	};
++	opp-500000000 {
++		opp-microvolt = <850000 850000 1000000>;
++	};
++	opp-600000000 {
++		opp-microvolt = <850000 850000 1000000>;
++	};
++	opp-700000000 {
++		opp-microvolt-L3 = <850000 850000 1000000>;
++		opp-microvolt-L4 = <850000 850000 1000000>;
++	};
++	opp-800000000 {
++		status = "disabled";
++	};
++	opp-900000000 {
++		status = "disabled";
++	};
++};
++
++&npu_opp_table {
++	/delete-node/ mbist-vmin;
++	/*
++	 * Max NPU frequency is 900MHz for the overdrive mode,
++	 * but it will reduce chip lifetime.
++	 */
++	opp-300000000 {
++		opp-microvolt = <850000 850000 1000000>;
++	};
++	opp-400000000 {
++		opp-microvolt = <850000 850000 1000000>;
++	};
++	opp-500000000 {
++		opp-microvolt = <850000 850000 1000000>;
++	};
++	opp-600000000 {
++		opp-microvolt-L2 = <850000 850000 1000000>;
++		opp-microvolt-L3 = <850000 850000 1000000>;
++		opp-microvolt-L4 = <850000 850000 1000000>;
++	};
++	opp-700000000 {
++		opp-microvolt-L4 = <850000 850000 1000000>;
++		status = "disabled";
++	};
++	opp-800000000 {
++		status = "disabled";
++	};
++	opp-900000000 {
++		status = "disabled";
++	};
++	opp-1000000000 {
++		status = "disabled";
++	};
++};
++
++&dmc {
++	system-status-level = <
++		/*system status		freq level*/
++		SYS_STATUS_NORMAL	DMC_FREQ_LEVEL_HIGH
++	>;
++	auto-freq-en = <0>;
++};
++
++&rockchip_amp {
++	clocks = <&cru FCLK_BUS_CM0_CORE>, <&cru CLK_BUS_CM0_RTC>,
++		<&cru PCLK_MAILBOX>, <&cru PCLK_INTC>,
++		<&cru PCLK_TIMER>, <&cru CLK_TIMER4>, <&cru CLK_TIMER5>,
++		<&cru SCLK_UART2>, <&cru PCLK_UART2>;
++
++	/delete-property/ pinctrl-names;
++	/delete-property/ pinctrl-0;
++};
++
++&rpmsg {
++	/* CPU3: link-id 0x03; MCU: link-id 0x04; */
++	rockchip,link-id = <0x04>;
++};
++
++&amp_shmem_reserved {
++	reg = <0x0 0x7800000 0x0 0x300000>;
++};
++
++&reserved_memory {
++	/* mcu ddr address */
++	/delete-node/ mcu@8200000;
++	mcu_reserved: mcu@7b00000 {
++		reg = <0x0 0x7b00000 0x0 0x100000>;
++		no-map;
++	};
++};
++
++&pinctrl {
++	pinctrl-names = "default";
++	pinctrl-0 = <&heartbeat_led_pin
++			&disk_led_pin
++			&user_led0_pin
++			&user_led1_pin
++			&export_pins_gpio>;
++
++	wusb3801 {
++		wusb3801_int_pin: wusb3801-int-pin {
++			rockchip,pins = <3 RK_PB6 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++		ch482d_sel_pin: ch482d-sel-pin {
++			rockchip,pins = <3 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
++	usb0 {
++		usb0_otg_pwren: usb0_otg_pwren {
++			rockchip,pins = <0 RK_PB0 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
++	gpio-leds {
++		heartbeat_led_pin: heartbeat-led-pin {
++			rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++		disk_led_pin: disk-led-pin {
++			rockchip,pins = <0 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++		user_led0_pin: user-led0-pin {
++			rockchip,pins = <4 RK_PB1 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++		user_led1_pin: user-led1-pin {
++			rockchip,pins = <4 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
++	export-pins {
++		export_pins_gpio: export_pins_gpio {
++			rockchip,pins = <
++			0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none
++			0 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none
++			0 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none
++			0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none
++			3 RK_PA0 RK_FUNC_GPIO &pcfg_pull_none
++			3 RK_PA1 RK_FUNC_GPIO &pcfg_pull_none
++			4 RK_PB4 RK_FUNC_GPIO &pcfg_pull_none
++			4 RK_PB5 RK_FUNC_GPIO &pcfg_pull_none
++			1 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none
++			1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_none
++			1 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none
++			1 RK_PC4 RK_FUNC_GPIO &pcfg_pull_none
++			1 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none
++			1 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none
++			4 RK_PB6 RK_FUNC_GPIO &pcfg_pull_none
++			3 RK_PD2 RK_FUNC_GPIO &pcfg_pull_none
++			3 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none
++			3 RK_PB7 RK_FUNC_GPIO &pcfg_pull_none
++			3 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++};
++
