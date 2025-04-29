@@ -20498,7 +20498,7 @@ index 2279481d..ed0f7352 100644
  #if IS_ENABLED(CONFIG_DWC_ETH_QOS_QCOM)
  	{
 diff --git a/drivers/net/dwc_eth_qos_rockchip.c b/drivers/net/dwc_eth_qos_rockchip.c
-index f3a0f630..f4687cdd 100644
+index f3a0f630..ecd360cb 100644
 --- a/drivers/net/dwc_eth_qos_rockchip.c
 +++ b/drivers/net/dwc_eth_qos_rockchip.c
 @@ -268,6 +268,197 @@ static void rk3588_set_clock_selection(struct udevice *dev, bool enable)
@@ -20718,15 +20718,18 @@ index f3a0f630..f4687cdd 100644
  	{ }
  };
  
-@@ -357,7 +560,7 @@ static int eqos_probe_resources_rk(struct udevice *dev)
+@@ -357,9 +560,9 @@ static int eqos_probe_resources_rk(struct udevice *dev)
  		goto err_free;
  	}
  
 -	if (device_is_compatible(dev, "rockchip,rk3588-gmac")) {
 +	if (device_is_compatible(dev, "rockchip,rk3588-gmac") || device_is_compatible(dev, "rockchip,rk3562-gmac")) {
  		data->php_grf =
- 			syscon_regmap_lookup_by_phandle(dev, "rockchip,php-grf");
+-			syscon_regmap_lookup_by_phandle(dev, "rockchip,php-grf");
++			syscon_regmap_lookup_by_phandle(dev, "rockchip,php_grf");
  		if (IS_ERR(data->php_grf)) {
+ 			dev_err(dev, "Missing rockchip,php-grf property\n");
+ 			ret = -EINVAL;
 diff --git a/drivers/pci/pcie_dw_rockchip.c b/drivers/pci/pcie_dw_rockchip.c
 index ac7faa4c..5445182f 100644
 --- a/drivers/pci/pcie_dw_rockchip.c
@@ -26409,10 +26412,10 @@ index 00000000..d2de0358
 +};
 diff --git a/dts/upstream/src/arm64/rockchip/rk3562.dtsi b/dts/upstream/src/arm64/rockchip/rk3562.dtsi
 new file mode 100644
-index 00000000..4b941cef
+index 00000000..2601cb92
 --- /dev/null
 +++ b/dts/upstream/src/arm64/rockchip/rk3562.dtsi
-@@ -0,0 +1,2375 @@
+@@ -0,0 +1,2374 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 +/*
 + * Copyright (c) 2022 Rockchip Electronics Co., Ltd.
@@ -28571,8 +28574,7 @@ index 00000000..4b941cef
 +			     <GIC_SPI 70 IRQ_TYPE_LEVEL_HIGH>;
 +		interrupt-names = "macirq", "eth_wake_irq";
 +		rockchip,grf = <&sys_grf>;
-+		// rockchip,php_grf = <&ioc_grf>;
-+		rockchip,php-grf = <&ioc_grf>;
++		rockchip,php_grf = <&ioc_grf>;
 +		clocks = <&cru CLK_GMAC_125M_CRU_I>, <&cru CLK_GMAC_50M_CRU_I>,
 +			 <&cru PCLK_GMAC>, <&cru ACLK_GMAC>;
 +		clock-names = "stmmaceth", "clk_mac_ref",
