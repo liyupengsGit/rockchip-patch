@@ -1,0 +1,60 @@
+Not currently on any branch.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .gitignore
+	modified:   arch/arm/include/asm/arch-rockchip/clock.h
+	modified:   arch/arm/include/asm/arch-rockchip/cru.h
+	modified:   arch/arm/mach-rockchip/Kconfig
+	modified:   arch/arm/mach-rockchip/Makefile
+	modified:   arch/arm/mach-rockchip/sdram.c
+	modified:   drivers/adc/rockchip-saradc.c
+	modified:   drivers/clk/rockchip/Makefile
+	modified:   drivers/misc/rockchip-otp.c
+	modified:   drivers/mmc/rockchip_sdhci.c
+	modified:   drivers/net/dwc_eth_qos.c
+	modified:   drivers/net/dwc_eth_qos_rockchip.c
+	modified:   drivers/pci/pcie_dw_rockchip.c
+	modified:   drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+	modified:   drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+	modified:   drivers/pinctrl/rockchip/Makefile
+	modified:   drivers/ram/rockchip/Makefile
+	modified:   drivers/reset/Makefile
+	modified:   drivers/thermal/Kconfig
+	modified:   drivers/thermal/Makefile
+	modified:   dts/upstream/Bindings/arm/rockchip.yaml
+	modified:   dts/upstream/include/dt-bindings/soc/rockchip,boot-mode.h
+	modified:   include/clk.h
+	modified:   tools/rkcommon.c
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	arch/arm/dts/rk3562-geekpi-1-u-boot.dtsi
+	arch/arm/include/asm/arch-rk3562/
+	arch/arm/include/asm/arch-rockchip/cru_rk3562.h
+	arch/arm/include/asm/arch-rockchip/grf_rk3562.h
+	arch/arm/include/asm/arch-rockchip/ioc_rk3562.h
+	arch/arm/include/asm/arch-rockchip/rockchip_smccc.h
+	arch/arm/include/asm/arch-rockchip/sdram_rk3562.h
+	arch/arm/mach-rockchip/rk3562/
+	board/geekpi/
+	board/rockchip/evb_rk3562/
+	configs/geekpi-1-rk3562_defconfig
+	drivers/clk/rockchip/clk_rk3562.c
+	drivers/misc/rk3562-secure-otp.S
+	drivers/pinctrl/rockchip/pinctrl-rk3562.c
+	drivers/ram/rockchip/sdram_rk3562.c
+	drivers/reset/rst-rk3562.c
+	drivers/thermal/rockchip_thermal.c
+	dts/upstream/include/dt-bindings/clock/rk3562-cru.h
+	dts/upstream/src/arm64/rockchip/rk3562-geekpi-1.dts
+	dts/upstream/src/arm64/rockchip/rk3562-pinctrl.dtsi
+	dts/upstream/src/arm64/rockchip/rk3562-rk809.dtsi
+	dts/upstream/src/arm64/rockchip/rk3562.dtsi
+	include/configs/evb_rk3562.h
+	include/configs/geekpi-1-rk3562.h
+	include/configs/rk3562_common.h
+	include/dt-bindings/power/rk3562-power.h
+	include/dt-bindings/soc/rockchip-system-status.h
+
+no changes added to commit (use "git add" and/or "git commit -a")
