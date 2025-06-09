@@ -1,0 +1,15 @@
+setenv serverip 192.168.0.101
+
+# 下载内核（Image，40MB）
+tftpboot 0x02000000 Image
+
+# 下载设备树（.dtb）
+tftpboot 0x04C00000 rk3562-geekpi-1.dtb
+
+booti 0x02000000 - 0x04C00000
+
+
+scp liyupeng@192.168.0.101:/home/liyupeng/develop/u-boot/u-boot-rockchip.bin ./
+sudo dd if=./u-boot-rockchip.bin of=/dev/mmcblk1 seek=64 
+sudo sync 
+sudo reboot
