@@ -1,0 +1,224 @@
+Not currently on any branch.
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   arch/arm64/boot/dts/rockchip/Makefile
+	modified:   arch/arm64/kernel/cpuinfo.c
+	modified:   drivers/Kconfig
+	modified:   drivers/Makefile
+	modified:   drivers/char/hw_random/rockchip-rng.c
+	modified:   drivers/clk/rockchip/Kconfig
+	modified:   drivers/clk/rockchip/Makefile
+	modified:   drivers/clk/rockchip/clk-ddr.c
+	modified:   drivers/clk/rockchip/clk-pll.c
+	modified:   drivers/clk/rockchip/clk.c
+	modified:   drivers/clk/rockchip/clk.h
+	modified:   drivers/cpufreq/Kconfig.arm
+	modified:   drivers/cpufreq/Makefile
+	modified:   drivers/cpufreq/cpufreq-dt-platdev.c
+	modified:   drivers/cpufreq/cpufreq-dt.c
+	modified:   drivers/devfreq/Kconfig
+	modified:   drivers/devfreq/Makefile
+	modified:   drivers/devfreq/event/rockchip-dfi.c
+	modified:   drivers/dma-buf/Kconfig
+	modified:   drivers/dma-buf/dma-buf.c
+	modified:   drivers/firmware/Kconfig
+	modified:   drivers/firmware/Makefile
+	modified:   drivers/gpio/gpiolib-of.c
+	modified:   drivers/gpu/drm/rockchip/dw-mipi-dsi-rockchip.c
+	modified:   drivers/gpu/drm/rockchip/rockchip_drm_drv.c
+	modified:   drivers/gpu/drm/rockchip/rockchip_drm_drv.h
+	modified:   drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
+	modified:   drivers/hwspinlock/Kconfig
+	modified:   drivers/hwspinlock/Makefile
+	modified:   drivers/iio/adc/rockchip_saradc.c
+	modified:   drivers/iommu/iommu.c
+	modified:   drivers/iommu/rockchip-iommu.c
+	modified:   drivers/mailbox/rockchip-mailbox.c
+	modified:   drivers/mfd/Kconfig
+	modified:   drivers/mfd/rk8xx-core.c
+	modified:   drivers/mmc/core/block.c
+	modified:   drivers/mmc/core/block.h
+	modified:   drivers/mmc/host/Makefile
+	modified:   drivers/mmc/host/sdhci-of-dwcmshc.c
+	modified:   drivers/net/ethernet/stmicro/stmmac/Kconfig
+	modified:   drivers/net/ethernet/stmicro/stmmac/Makefile
+	modified:   drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+	modified:   drivers/nvmem/core.c
+	modified:   drivers/nvmem/rockchip-efuse.c
+	modified:   drivers/nvmem/rockchip-otp.c
+	modified:   drivers/opp/opp.h
+	modified:   drivers/pci/controller/dwc/pcie-dw-rockchip.c
+	modified:   drivers/phy/rockchip/Kconfig
+	modified:   drivers/phy/rockchip/Makefile
+	modified:   drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c
+	modified:   drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+	modified:   drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+	modified:   drivers/pmdomain/rockchip/Kconfig
+	modified:   drivers/pmdomain/rockchip/Makefile
+	modified:   drivers/pmdomain/rockchip/pm-domains.c
+	modified:   drivers/regulator/internal.h
+	modified:   drivers/regulator/of_regulator.c
+	modified:   drivers/rpmsg/Kconfig
+	modified:   drivers/rpmsg/Makefile
+	modified:   drivers/soc/rockchip/Kconfig
+	modified:   drivers/soc/rockchip/Makefile
+	modified:   drivers/thermal/rockchip_thermal.c
+	modified:   drivers/thermal/thermal_core.h
+	modified:   drivers/usb/dwc2/drd.c
+	modified:   drivers/usb/dwc2/hcd.c
+	modified:   drivers/usb/dwc3/core.c
+	modified:   drivers/usb/dwc3/core.h
+	modified:   drivers/usb/dwc3/debugfs.c
+	modified:   drivers/usb/dwc3/drd.c
+	modified:   drivers/usb/dwc3/gadget.c
+	modified:   drivers/usb/host/xhci-plat.c
+	modified:   drivers/usb/host/xhci.c
+	modified:   drivers/usb/phy/Kconfig
+	modified:   fs/ext4/super.c
+	modified:   fs/pstore/ram.c
+	modified:   include/drm/drm_drv.h
+	modified:   include/dt-bindings/soc/rockchip,boot-mode.h
+	modified:   include/linux/device/bus.h
+	modified:   include/linux/dma-buf.h
+	modified:   include/linux/dmaengine.h
+	modified:   include/linux/energy_model.h
+	modified:   include/linux/extcon.h
+	modified:   include/linux/iommu.h
+	modified:   include/linux/irqnr.h
+	modified:   include/linux/of_gpio.h
+	modified:   include/linux/sched/signal.h
+	modified:   include/linux/string.h
+	modified:   include/soc/rockchip/rockchip_sip.h
+	modified:   include/sound/soc-component.h
+	modified:   include/sound/soc-dai.h
+	modified:   include/sound/soc.h
+	modified:   init/main.c
+	modified:   kernel/rcu/tree_stall.h
+	modified:   kernel/sched/core.c
+	modified:   kernel/sched/cpufreq_schedutil.c
+	modified:   kernel/sched/sched.h
+	modified:   lib/string.c
+	modified:   mm/readahead.c
+	modified:   sound/soc/codecs/Kconfig
+	modified:   sound/soc/codecs/Makefile
+	modified:   sound/soc/codecs/rk817_codec.c
+	modified:   sound/soc/rockchip/Kconfig
+	modified:   sound/soc/rockchip/Makefile
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	arch/arm64/boot/dts/rockchip/rk3562-amp.dtsi
+	arch/arm64/boot/dts/rockchip/rk3562-evb.dtsi
+	arch/arm64/boot/dts/rockchip/rk3562-geekpi-1.dts
+	arch/arm64/boot/dts/rockchip/rk3562-pinctrl.dtsi
+	arch/arm64/boot/dts/rockchip/rk3562-rk809.dtsi
+	arch/arm64/boot/dts/rockchip/rk3562.dtsi
+	arch/arm64/configs/geekpi-1-rk3562_defconfig
+	arch/arm64/include/asm/system_info.h
+	diff.log
+	drivers/clk/rockchip/clk-link.c
+	drivers/clk/rockchip/clk-out.c
+	drivers/clk/rockchip/clk-pvtm.c
+	drivers/clk/rockchip/clk-pvtpll.c
+	drivers/clk/rockchip/clk-rk3562.c
+	drivers/cpufreq/rockchip-cpufreq.c
+	drivers/cpufreq/rockchip-cpufreq.h
+	drivers/devfreq/rockchip_bus.c
+	drivers/devfreq/rockchip_dmc.c
+	drivers/devfreq/rockchip_dmc_common.c
+	drivers/devfreq/rockchip_dmc_dbg.c
+	drivers/devfreq/rockchip_dmc_timing.h
+	drivers/firmware/rockchip_sip.c
+	drivers/gpu/drm/rockchip/rockchip_drm_vvop.c
+	drivers/hwspinlock/rockchip_hwspinlock.c
+	drivers/media/platform/rockchip/cif/
+	drivers/media/platform/rockchip/isp/
+	drivers/mmc/host/rk_sdmmc_ops.c
+	drivers/mmc/host/rk_sdmmc_ops.h
+	drivers/phy/rockchip/phy-rockchip-csi2-dphy-common.h
+	drivers/phy/rockchip/phy-rockchip-csi2-dphy-hw.c
+	drivers/phy/rockchip/phy-rockchip-csi2-dphy.c
+	drivers/phy/rockchip/phy-rockchip-samsung-dcphy.h
+	drivers/pmdomain/rockchip/rockchip_pm_config.c
+	drivers/rknpu/
+	drivers/rpmsg/rockchip_rpmsg_mbox.c
+	drivers/rpmsg/rockchip_rpmsg_softirq.c
+	drivers/rpmsg/rockchip_rpmsg_test.c
+	drivers/soc/rockchip/fiq_debugger/
+	drivers/soc/rockchip/mtd_vendor_storage.c
+	drivers/soc/rockchip/rk_dmabuf_procfs.c
+	drivers/soc/rockchip/rk_vendor_storage.c
+	drivers/soc/rockchip/rockchip-cpuinfo.c
+	drivers/soc/rockchip/rockchip_amp.c
+	drivers/soc/rockchip/rockchip_csu.c
+	drivers/soc/rockchip/rockchip_debug.c
+	drivers/soc/rockchip/rockchip_debug.h
+	drivers/soc/rockchip/rockchip_ipa.c
+	drivers/soc/rockchip/rockchip_opp_select.c
+	drivers/soc/rockchip/rockchip_performance.c
+	drivers/soc/rockchip/rockchip_pvtm.c
+	drivers/soc/rockchip/rockchip_system_monitor.c
+	drivers/soc/rockchip/sdmmc_vendor_storage.c
+	drivers/video/rockchip/
+	include/dt-bindings/clock/rk3562-cru.h
+	include/dt-bindings/clock/rockchip-ddr.h
+	include/dt-bindings/display/drm_mipi_dsi.h
+	include/dt-bindings/power/rk3562-power.h
+	include/dt-bindings/sensor-dev.h
+	include/dt-bindings/soc/rockchip-amp.h
+	include/dt-bindings/soc/rockchip-csu.h
+	include/dt-bindings/soc/rockchip-system-status.h
+	include/dt-bindings/suspend/
+	include/linux/clk/rockchip.h
+	include/linux/earlysuspend.h
+	include/linux/ebc.h
+	include/linux/rockchip/
+	include/linux/rpmsg/rockchip_rpmsg.h
+	include/linux/soc/rockchip/
+	include/linux/version_compat_defs.h
+	include/linux/wakelock.h
+	include/soc/rockchip/rkfb_dmc.h
+	include/soc/rockchip/rockchip-mailbox.h
+	include/soc/rockchip/rockchip-system-status.h
+	include/soc/rockchip/rockchip_amp.h
+	include/soc/rockchip/rockchip_csu.h
+	include/soc/rockchip/rockchip_dmc.h
+	include/soc/rockchip/rockchip_iommu.h
+	include/soc/rockchip/rockchip_ipa.h
+	include/soc/rockchip/rockchip_opp_select.h
+	include/soc/rockchip/rockchip_performance.h
+	include/soc/rockchip/rockchip_system_monitor.h
+	include/trace/events/thermal.h
+	include/trace/events/thermal_ipa_power.h
+	include/uapi/linux/rk-camera-module.h
+	include/uapi/linux/rk-video-format.h
+	include/uapi/linux/rkcif-config.h
+	include/uapi/misc/rkflash_vendor_storage.h
+	sound/soc/codecs/rk_dsm.c
+	sound/soc/codecs/rk_dsm.h
+	sound/soc/rockchip/rockchip_asrc.c
+	sound/soc/rockchip/rockchip_asrc.h
+	sound/soc/rockchip/rockchip_dlp.c
+	sound/soc/rockchip/rockchip_dlp.h
+	sound/soc/rockchip/rockchip_dlp_pcm.c
+	sound/soc/rockchip/rockchip_dlp_pcm.h
+	sound/soc/rockchip/rockchip_hdmi.c
+	sound/soc/rockchip/rockchip_hdmi_analog.c
+	sound/soc/rockchip/rockchip_hdmi_dp.c
+	sound/soc/rockchip/rockchip_multi_dais.c
+	sound/soc/rockchip/rockchip_multi_dais.h
+	sound/soc/rockchip/rockchip_multi_dais_pcm.c
+	sound/soc/rockchip/rockchip_multicodecs.c
+	sound/soc/rockchip/rockchip_pdm_v2.c
+	sound/soc/rockchip/rockchip_pdm_v2.h
+	sound/soc/rockchip/rockchip_sai.c
+	sound/soc/rockchip/rockchip_sai.h
+	sound/soc/rockchip/rockchip_spdifrx.c
+	sound/soc/rockchip/rockchip_spdifrx.h
+	sound/soc/rockchip/rockchip_trcm.c
+	sound/soc/rockchip/rockchip_trcm.h
+	sound/soc/rockchip/rockchip_utils.c
+	sound/soc/rockchip/rockchip_utils.h
+
+no changes added to commit (use "git add" and/or "git commit -a")
